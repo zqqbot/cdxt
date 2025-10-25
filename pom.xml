@@ -8,6 +8,33 @@
     <version>1.0.0</version>
     <name>cdxt</name>
     <description>crypto cdxt</description>
+    <url>https://github.com/zqqbot/cdxt</url>
+    <!--用于发布：开源协议...-->
+    <licenses>
+        <license>
+            <name>MIT License</name>
+            <url>https://github.com/zqqbot/cdxt/blob/main/LICENSE</url>
+        </license>
+    </licenses>
+    <!--用于发布：开发者信息-->
+    <developers>
+        <developer>
+            <!--对应你maven配置中的server id-->
+            <id>central</id>
+            <name>cdxt</name>
+            <email>zqqbot@gmail.com</email>
+            <roles>
+                <role>Project Manager</role>
+                <role>Developer</role>
+            </roles>
+        </developer>
+    </developers>
+    <!--用于发布：项目链接-->
+    <scm>
+        <connection>https://github.com/zqqbot/cdxt.git</connection>
+        <developerConnection>scm:git:ssh://git@github.com:zqqbot/cdxt.git</developerConnection>
+        <url>https://github.com/zqqbot/cdxt</url>
+    </scm>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -62,33 +89,6 @@
                     <encoding>${project.build.sourceEncoding}</encoding>
                 </configuration>
             </plugin>
-            
-            <!-- 打包源码插件 -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-source-plugin</artifactId>
-                <version>3.2.1</version>
-                <executions>
-                    <execution>
-                        <id>attach-sources</id>
-                        <goals>
-                            <goal>jar-no-fork</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-            
-            <!-- 测试插件 -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-surefire-plugin</artifactId>
-                <version>3.0.0-M7</version>
-                <configuration>
-                    <includes>
-                        <include>**/*Test.java</include>
-                    </includes>
-                </configuration>
-            </plugin>
 
             <!-- ！！！重点插件一，gpg 相关插件 -->
             <plugin>
@@ -112,16 +112,51 @@
                     </execution>
                 </executions>
             </plugin>
-            <!-- ！！！重点插件二，新的发布插件 -->
+
+            <!--   central发布插件    -->
             <plugin>
                 <groupId>org.sonatype.central</groupId>
                 <artifactId>central-publishing-maven-plugin</artifactId>
-                <version>0.8.0</version>
+                <version>0.4.0</version>
                 <extensions>true</extensions>
                 <configuration>
                     <publishingServerId>central</publishingServerId>
-                    <autoPublish>true</autoPublish>
+                    <tokenAuth>true</tokenAuth>
                 </configuration>
+            </plugin>
+            <!--   source源码插件 -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+                <version>2.2.1</version>
+                <executions>
+                    <execution>
+                        <id>attach-sources</id>
+                        <goals>
+                            <goal>jar-no-fork</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <!--   javadoc插件 -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>3.1.1</version>
+                <configuration>
+                    <charset>UTF-8</charset>
+                    <encoding>UTF-8</encoding>
+                    <docencoding>UTF-8</docencoding>
+                    <additionalJOption>-Xdoclint:none</additionalJOption>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>attach-javadocs</id>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
 
         </plugins>
