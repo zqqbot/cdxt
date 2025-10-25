@@ -7,13 +7,22 @@
     <artifactId>cdxt</artifactId>
     <version>1.0.0</version>
     <name>cdxt</name>
-    <description>crypto cdxt</description>
+    <description>cdxt is a Java library providing a simple and consistent API for interacting with
+        a diverse set of cryptocurrency exchanges.</description>
     <url>https://github.com/zqqbot/cdxt</url>
+    <inceptionYear>2025</inceptionYear>
+
+    <organization>
+        <name>zqqBot Inc.</name>
+        <url>https://zqqbot.com/</url>
+    </organization>
     <!--用于发布：开源协议...-->
     <licenses>
         <license>
-            <name>MIT License</name>
-            <url>https://github.com/zqqbot/cdxt/blob/main/LICENSE</url>
+            <name>MIT</name>
+            <url>https://www.opensource.org/licenses/mit-license.php</url>
+            <distribution>repo</distribution>
+            <comments>All source code is under the MIT license.</comments>
         </license>
     </licenses>
     <!--用于发布：开发者信息-->
@@ -23,18 +32,20 @@
             <id>central</id>
             <name>cdxt</name>
             <email>zqqbot@gmail.com</email>
-            <roles>
-                <role>Project Manager</role>
-                <role>Developer</role>
-            </roles>
         </developer>
     </developers>
     <!--用于发布：项目链接-->
     <scm>
-        <connection>https://github.com/zqqbot/cdxt.git</connection>
-        <developerConnection>scm:git:ssh://git@github.com:zqqbot/cdxt.git</developerConnection>
+        <connection>scm:git@github.com:zqqbot/cdxt.git</connection>
+        <developerConnection>scm:git:git@github.com:zqqbot/cdxt.git</developerConnection>
+        <tag>HEAD</tag>
         <url>https://github.com/zqqbot/cdxt</url>
     </scm>
+
+    <issueManagement>
+        <system>GitHub</system>
+        <url>https://github.com/zqqbot/cdxt/issues</url>
+    </issueManagement>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -82,11 +93,11 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.1</version>
+                <version>3.14.1</version>
                 <configuration>
-                    <source>${java.version}</source>
-                    <target>${java.version}</target>
-                    <encoding>${project.build.sourceEncoding}</encoding>
+                    <release>${java.version}</release>
+                    <showDeprecation>true</showDeprecation>
+                    <showWarnings>true</showWarnings>
                 </configuration>
             </plugin>
 
@@ -113,48 +124,53 @@
                 </executions>
             </plugin>
 
-            <!--   central发布插件    -->
+            <!-- for deploying to Maven Central -->
             <plugin>
-                <groupId>org.sonatype.central</groupId>
-                <artifactId>central-publishing-maven-plugin</artifactId>
-                <version>0.4.0</version>
-                <extensions>true</extensions>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-release-plugin</artifactId>
+                <version>3.1.1</version>
                 <configuration>
-                    <publishingServerId>central</publishingServerId>
-                    <tokenAuth>true</tokenAuth>
+                    <autoVersionSubmodules>true</autoVersionSubmodules>
                 </configuration>
             </plugin>
-            <!--   source源码插件 -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-source-plugin</artifactId>
-                <version>2.2.1</version>
+                <version>3.3.1</version>
                 <executions>
                     <execution>
                         <id>attach-sources</id>
-                        <goals>
-                            <goal>jar-no-fork</goal>
-                        </goals>
                     </execution>
                 </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>3.5.4</version>
+            </plugin>
+            <plugin>
+                <groupId>org.sonatype.central</groupId>
+                <artifactId>central-publishing-maven-plugin</artifactId>
+                <version>0.9.0</version>
+                <extensions>true</extensions>
+                <configuration>
+                    <publishingServerId>central</publishingServerId>
+                    <autoPublish>true</autoPublish>
+                </configuration>
             </plugin>
             <!--   javadoc插件 -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
-                <version>3.1.1</version>
+                <version>3.12.0</version>
                 <configuration>
-                    <charset>UTF-8</charset>
-                    <encoding>UTF-8</encoding>
-                    <docencoding>UTF-8</docencoding>
-                    <additionalJOption>-Xdoclint:none</additionalJOption>
+                    <quiet>true</quiet>
+                    <doclint>none</doclint>
+                    <source>${java.version}</source>
                 </configuration>
                 <executions>
                     <execution>
                         <id>attach-javadocs</id>
-                        <goals>
-                            <goal>jar</goal>
-                        </goals>
                     </execution>
                 </executions>
             </plugin>
@@ -164,26 +180,86 @@
 
     <repositories>
         <repository>
-            <id>public</id>
-            <name>aliyun nexus</name>
-            <url>https://maven.aliyun.com/repository/public</url>
             <releases>
-                <enabled>true</enabled>
+                <enabled>false</enabled>
             </releases>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+            <id>central-portal-snapshots</id>
+            <name>Central Portal Snapshots</name>
+            <url>https://central.sonatype.com/repository/maven-snapshots/</url>
+        </repository>
+        <repository>
+            <id>maven_central</id>
+            <name>Maven Central</name>
+            <url>https://repo.maven.apache.org/maven2/</url>
         </repository>
     </repositories>
 
-    <pluginRepositories>
-        <pluginRepository>
-            <id>public</id>
-            <name>aliyun nexus</name>
-            <url>https://maven.aliyun.com/repository/public</url>
-            <releases>
-                <enabled>true</enabled>
-            </releases>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-        </pluginRepository>
-    </pluginRepositories>
+    <profiles>
+        <profile>
+            <id>release-sign-artifacts</id>
+            <activation>
+                <property>
+                    <name>gpg.passphrase</name>
+                    <value>true</value>
+                </property>
+            </activation>
+            <build>
+                <plugins>
+                    <!-- ！！！重点插件一，gpg 相关插件 -->
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-gpg-plugin</artifactId>
+                        <version>1.6</version>
+                        <inherited>false</inherited>
+                        <executions>
+                            <execution>
+                                <id>sign-artifacts</id>
+                                <phase>verify</phase>
+                                <goals>
+                                    <goal>sign</goal>
+                                </goals>
+                                <configuration>
+                                    <gpgArguments>
+                                        <arg>--pinentry-mode</arg>
+                                        <arg>loopback</arg>
+                                    </gpgArguments>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <!-- Generates JavaDocs during package -->
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-javadoc-plugin</artifactId>
+                        <version>3.12.0</version>
+                        <executions>
+                            <execution>
+                                <id>attach-javadocs</id>
+                                <configuration>
+                                    <doclint>none</doclint>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+
+                    <!-- Generates a source code JAR during package -->
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-source-plugin</artifactId>
+                        <version>3.3.1</version>
+                        <executions>
+                            <execution>
+                                <id>attach-sources</id>
+                            </execution>
+                        </executions>
+                    </plugin>
+
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
+
 </project>
